@@ -1,0 +1,49 @@
+{
+  "version": "disease-mobilenet-v1-paddy-doctor",
+  "classes": [
+    "healthy",
+    "blast",
+    "brown_spot",
+    "bacterial_leaf_blight",
+    "tungro"
+  ],
+  "labels": [
+    "healthy",
+    "blast",
+    "brown_spot",
+    "bacterial_leaf_blight",
+    "tungro"
+  ],
+  "input_size": [
+    224,
+    224
+  ],
+  "mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "confidence_threshold": 0.52,
+  "model_url": "/api/v1/features/disease/model/download",
+  "mode": "trained_mobilenet_v3_small",
+  "provenance": {
+    "dataset": "Project-AgML/paddy_disease_classification",
+    "paper": "Petchiammal et al. 2022/2023 \u2014 Paddy Doctor",
+    "ieee_dataport": "10.21227/hz4v-af08",
+    "license_note": "HF dataset card has no SPDX license field. Original authors released Paddy Doctor open-source for community use (school/non-commercial). IEEE DataPort original archives require login.",
+    "checkpoint_epoch": 11,
+    "val_acc": 0.89
+  },
+  "limitations": [
+    "Model sekolah dilatih pada subset Paddy Doctor; bukan sertifikasi lapangan.",
+    "Akurasi lapangan terbatas; gunakan retake foto bila confidence rendah."
+  ],
+  "hash": "2ae2c7558eb38c5eee0dc661e24735fa787fb8d6f368246aba4fcf2c954f8aa0",
+  "size_bytes": 6111260,
+  "onnxruntime_verified": true
+}

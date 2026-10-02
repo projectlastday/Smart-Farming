@@ -1,0 +1,72 @@
+# AgriFusionNet disease_v1 training config
+# Dataset: Paddy Doctor (Petchiammal et al. 2022) via Hugging Face
+# https://huggingface.co/datasets/Project-AgML/paddy_disease_classification
+
+seed: 42
+image_size: 224
+
+# ImageNet normalization (torchvision pretrained convention)
+mean: [0.485, 0.456, 0.406]
+std: [0.229, 0.224, 0.225]
+
+classes:
+  - healthy
+  - blast
+  - brown_spot
+  - bacterial_leaf_blight
+  - tungro
+
+# Map HF source labels → project class names
+label_map:
+  normal: healthy
+  blast: blast
+  brown_spot: brown_spot
+  bacterial_leaf_blight: bacterial_leaf_blight
+  tungro: tungro
+
+# Per-class caps after dedup (school laptop; ~90 min CPU budget)
+max_per_class:
+  train: 250
+  val: 40
+  test: 40
+
+# Train/val/test ratios applied before per-split caps
+split_ratios:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+
+model: mobilenet_v3_small
+pretrained: true
+
+training:
+  epochs: 12
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  num_workers: 2
+
+augmentation:
+  horizontal_flip: 0.5
+  rotation_degrees: 15
+  color_jitter:
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.05
+
+# Unknown threshold calibration (max softmax below → unknown)
+unknown_threshold:
+  search_min: 0.45
+  search_max: 0.60
+  search_step: 0.01
+
+paths:
+  data_dir: ml/data/paddy_doctor_subset
+  manifest: ml/data/paddy_doctor_subset/manifest.json
+  split_manifest: ml/data/paddy_doctor_subset/split.json
+  checkpoint_dir: ml/checkpoints
+  checkpoint: ml/checkpoints/disease_v1_best.pt
+  onnx: models/disease_v1.onnx
+  onnx_meta: models/disease_v1.json
+  metrics: ml/evaluation/metrics.json

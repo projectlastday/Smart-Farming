@@ -1,0 +1,8 @@
+{
+  "region": "central-java",
+  "ph_hydroxide": 5.6,
+  "nitrogen_gkg": 1.2,
+  "uncertainty": "high",
+  "retrieved_at": "2026-01-01T00:00:00Z",
+  "note": "Demo regional baseline only"
+}

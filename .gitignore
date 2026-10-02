@@ -1,0 +1,81 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+.env.production
+secrets/
+*.pem
+*.key
+id_rsa*
+credentials.json
+kaggle.json
+.huggingface/
+
+# Backups and database dumps
+backups/
+dumps/
+*.sql
+*.sql.gz
+*.dump
+
+# Local datasets (real images; do not commit)
+datasets/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Node
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# ML artifacts and large data
+ml/data/
+ml/runs/
+ml/checkpoints/
+ml/outputs/
+ml/artifacts/
+ml/evaluation/reports/
+ml/evaluation/metrics.json
+models/*.onnx
+models/*.pt
+models/*.pth
+fixtures/**/*.tif
+fixtures/**/*.tiff
+!fixtures/mapping/demo_metadata.json
+!fixtures/disease/README.md
+
+# Uploads and runtime volumes
+uploads/
+saved_images/
+.soilgrids_cache/
+fixtures/nasa-power/
+fixtures/soilgrids-live/
+
+# IDE and OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/public/ort/
+
+# Copied at build from onnxruntime-web
+frontend/public/ort/
+
+# Docker
+*.log

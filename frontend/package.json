@@ -1,0 +1,42 @@
+{
+  "name": "agrifusionnet-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:desktop": "playwright test --project=desktop-chromium",
+    "test:e2e:mobile": "playwright test --project=mobile-chrome",
+    "test:e2e:responsive": "playwright test e2e/responsive-acceptance.spec.ts"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "5.62.8",
+    "onnxruntime-web": "1.20.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.1.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "fake-indexeddb": "^6.0.0",
+    "jsdom": "25.0.1",
+    "msw": "^2.7.0",
+    "typescript": "5.7.2",
+    "vite": "6.0.3",
+    "vite-plugin-pwa": "0.21.1",
+    "vitest": "2.1.8",
+    "workbox-window": "7.3.0"
+  }
+}
