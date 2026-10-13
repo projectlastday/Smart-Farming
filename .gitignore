@@ -52,7 +52,6 @@ models/*.pt
 models/*.pth
 fixtures/**/*.tif
 fixtures/**/*.tiff
-!fixtures/mapping/demo_metadata.json
 !fixtures/disease/README.md
 
 # Uploads and runtime volumes

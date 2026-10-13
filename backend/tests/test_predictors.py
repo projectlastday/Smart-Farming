@@ -52,7 +52,7 @@ def test_rejuvenation_ui_canopy_and_decline_mappings():
 
 
 def test_all_crop_feature_applicability_matrix():
-    features = ["harvest", "disease", "rejuvenation", "mapping", "soil"]
+    features = ["harvest", "disease", "rejuvenation", "soil"]
     for crop in (CropType.rice, CropType.guava):
         for feature in features:
             ok, reason = crop_feature_applicable(feature, crop)
@@ -61,8 +61,6 @@ def test_all_crop_feature_applicability_matrix():
             elif feature == "disease" and crop == CropType.guava:
                 assert not ok and reason
             elif feature == "rejuvenation" and crop == CropType.rice:
-                assert not ok and reason
-            elif feature == "mapping" and crop == CropType.guava:
                 assert not ok and reason
             else:
                 assert ok and reason is None

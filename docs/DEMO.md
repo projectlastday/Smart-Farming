@@ -15,13 +15,13 @@ Do not use the Playwright account `e2e.farmer@agrifusion.test` on stage.
 2. **Analisis Tanaman**: lihat semua prediksi tersimpan dalam satu daftar, lalu pilih **Buka** pada hasil yang ingin diperiksa.
 3. **Diagnosis Penyakit**: upload `fixtures/disease/known_good/blast.jpg`. Expect `classified` / blast from the trained ONNX, with model probability (not a color heuristic).
 4. **Prediksi Panen**: run, then **Tandai Panen** with an actual date. Predicted-vs-actual appears; the original prediction row is unchanged.
-5. Guava cycle: soil + rejuvenation. Disease/harvest/mapping show **Tidak Berlaku** with an explanation, not a fake score.
+5. Guava cycle: soil + rejuvenation. Disease/harvest show **Tidak Berlaku** with an explanation, not a fake score.
 6. **AI Offline**: Aktifkan AI Offline → DevTools Network Offline (or equivalent) → reload → diagnosis on the same blast photo → queue → go online → Sinkronkan Sekarang once (`1 tersinkron`) → sync again (`0 tersinkron`).
 
 Honest answers if asked:
 
 - Disease is a school model on a Paddy Doctor subset (test accuracy 0.88). Not a field diagnosis.
-- Harvest/soil/rejuvenation/mapping are transparent rules.
+- Harvest/soil/rejuvenation are transparent rules.
 - Offline inference runs ONNX Runtime WASM in the browser; the leaf image is not uploaded until sync of the structured result.
 
 ## Admin

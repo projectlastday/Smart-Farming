@@ -283,7 +283,6 @@ def crop_feature_applicable(feature: str, crop: CropType) -> tuple[bool, str | N
         ("harvest", CropType.guava): "Panen padi tidak berlaku untuk siklus jambu biji.",
         ("disease", CropType.guava): "Diagnosis daun padi tidak berlaku untuk jambu biji.",
         ("rejuvenation", CropType.rice): "Rejuvenation kebun tidak berlaku untuk padi (tanaman semusim).",
-        ("mapping", CropType.guava): "Demo pemetaan lahan v1 difokuskan pada contoh padi.",
     }
     key = (feature, crop)
     if key in rules:

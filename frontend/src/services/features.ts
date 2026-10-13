@@ -38,16 +38,6 @@ export async function runRejuvenation(payload: {
   });
 }
 
-export async function runMapping(
-  cropCycleId: string,
-  useFixture = true,
-): Promise<Prediction> {
-  return apiFetch<Prediction>('/features/mapping', {
-    method: 'POST',
-    body: JSON.stringify({ crop_cycle_id: cropCycleId, use_fixture: useFixture }),
-  });
-}
-
 export async function runDisease(
   cropCycleId: string,
   image: File,

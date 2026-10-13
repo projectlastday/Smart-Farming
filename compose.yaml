@@ -43,7 +43,6 @@ services:
       NASA_POWER_CACHE_DIR: /data/adapter-cache/nasa-power
       NASA_POWER_ENABLED: ${NASA_POWER_ENABLED:-true}
       SOILGRIDS_LIVE_ENABLED: ${SOILGRIDS_LIVE_ENABLED:-true}
-      MAPPING_FIXTURE_PATH: /fixtures/mapping/demo_raster.tif
       PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-https://sf.projectdunia.my.id}
     volumes:
       - ./models:/models:ro

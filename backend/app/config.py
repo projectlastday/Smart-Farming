@@ -63,8 +63,6 @@ class Settings(BaseSettings):
     disease_model_version: str = "disease-mobilenet-v1-paddy-doctor"
     disease_confidence_threshold: float = 0.52
 
-    mapping_fixture_path: str = str(ROOT_DIR / "fixtures" / "mapping" / "demo_raster.tif")
-
     upload_max_bytes: int = 10 * 1024 * 1024
     upload_max_pixels: int = 4096 * 4096
     upload_tmp_dir: str = "/tmp/agrifusion-uploads"

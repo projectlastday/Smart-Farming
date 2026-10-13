@@ -1,17 +1,18 @@
 # AgriFusionNet Implementation Handoff
 
 Last updated: 2026-09-02
+Current scope update (2026-10-13): farmland mapping has been removed from the application. The original planning/history below may still mention it; those sections are historical, not active implementation requirements. Existing mapping predictions are retained as legacy history and are not generated again.
 Project directory: `/home/brian/projects/subdomains/domain brian/Smart Farming`  
 Status: implemented on branch `audit-remediation`; demo stack at http://127.0.0.1:8005. Backend pytest 114 passed, frontend vitest 111 passed + tsc, Playwright desktop 80 + mobile 80 (160) including goal-acceptance, true-offline disease sync, accessibility, and PWA manifest/SW. `scripts/verify_compose_persistence.sh` passed. Public incognito walkthrough, physical Add-to-Home-Screen, and NVDA/VoiceOver remain owner-manual.
 
 ## Current architecture (as built)
 
-- **Crops:** rice + guava only. Six features: harvest, soil, disease, rejuvenation, mapping, offline sync.
+- **Crops:** rice + guava only. Five features: harvest, soil, disease, rejuvenation, and offline sync.
 - **Roles:** farmer (own farms/cycles/predictions), admin (farmer accounts only), superadmin (account management + audit + reference).
 - **Data:** MySQL 8.4, Alembic (`0004_remove_setup_tokens` head), opaque `agrifusion_session` cookies, CSRF `X-CSRF-Token`. Tests use `agrifusionnet_test`.
 - **Disease v1:** MobileNetV3-Small ONNX trained on a real Paddy Doctor subset (Hugging Face `Project-AgML/paddy_disease_classification`). Version `disease-mobilenet-v1-paddy-doctor`. Test accuracy 0.8800, macro F1 0.8805, unknown threshold 0.52. Synthetic leaf drawings are **not** used and must not be described as classification. Details: `docs/model-disease.md`.
 - **Offline:** ONNX Runtime WASM from `/ort/` (precache), IndexedDB queue, `client_operation_id` exactly-once sync. CSRF is kept in `sessionStorage` so an offline reload can still sync after reconnect.
-- **Rules:** harvest variety durations, soil advisory, guava rejuvenation score, mapping single-band threshold (fixture 25.0%, not 62.5). Reliability kind `rule_completeness` for rules; `model_probability` only for classified disease.
+- **Rules:** harvest variety durations, soil advisory, and guava rejuvenation score. Reliability kind `rule_completeness` for rules; `model_probability` only for classified disease.
 - **Local HTTP:** `COOKIE_SECURE_ENABLED=false`. Do not enable Secure cookies while serving `http://127.0.0.1:8005`. HSTS is omitted on localhost/HTTP :8005 and sent for `sf.projectdunia.my.id` over HTTPS (nginx public server + backend when `Host` matches `PUBLIC_ORIGIN` and the request is HTTPS).
 - **External context:** NASA POWER and SoilGrids adapters use timeout, retry, disk cache, provenance, and explicit fallback (`demo_fallback` / `local_cache`). Harvest and soil remain rules. See `docs/external-adapters.md`.
 - **Ops:** isolated backup/restore drill (`scripts/backup_restore_drill.sh`), retention CLI (`python -m app.cli retention-cleanup`), health `/api/v1/health/live|ready` and `/api/v1/metrics`. Runbook: `docs/ops-runbook.md`.
@@ -29,7 +30,7 @@ When making further changes:
 2. Query the appropriate NotebookLM notebook for details before making a material scientific, architectural, security, or operational decision.
 3. Treat the two custom planning documents in each notebook as the authority when a general article or framework guide conflicts with a settled project decision.
 4. Mark assumptions in code or ADRs. Ask the user when an unresolved choice would materially alter the product.
-5. Keep all six features honest: do not substitute synthetic drawings for a real rice-leaf dataset, and do not present rules as calibrated model probabilities.
+5. Keep all active features honest: do not substitute synthetic drawings for a real rice-leaf dataset, and do not present rules as calibrated model probabilities.
 
 ## 2. Original Assignment and Product Intent
 
@@ -49,10 +50,10 @@ User-facing language is **Indonesian**. Technical documentation, code identifier
 
 The implementation is deliberately bounded to two crops:
 
-- **Rice / padi** for crop cycles, harvest prediction, leaf disease diagnosis, soil guidance, and relevant mapping demonstrations.
+- **Rice / padi** for crop cycles, harvest prediction, leaf disease diagnosis, and soil guidance.
 - **Guava / jambu biji** for orchard rejuvenation guidance, soil guidance, and relevant farm records.
 
-The scientific notebook contains literature for many more crops. That broader literature is reference material, not permission to expand v1. A focused crop scope makes the six features implementable and scientifically defensible.
+The scientific notebook contains literature for many more crops. That broader literature is reference material, not permission to expand v1. A focused crop scope makes the features implementable and scientifically defensible.
 
 Every feature must declare crop applicability. An invalid combination remains visible but returns **“Tidak Berlaku”** with a short scientific explanation. Do not silently hide invalid combinations and do not fabricate a prediction.
 
@@ -63,16 +64,15 @@ Examples:
 - Guava rice harvest model: not applicable.
 - Soil assessment: applicable when required inputs are provided, but state whether values are measured, manually entered, simulated, or location-derived.
 
-### Six user-facing features
+### Current user-facing features
 
 1. Rice harvest-time prediction.
 2. Soil-condition analysis with nitrogen guidance.
 3. Rice leaf-disease diagnosis.
 4. Guava orchard rejuvenation guidance.
-5. Crop/farmland mapping.
-6. Offline AI and synchronization.
+5. Offline AI and synchronization.
 
-Offline AI is intentionally presented as a feature, even though technically it is a deployment capability reused by disease diagnosis and local rule execution. It directly addresses unreliable field connectivity and satisfies the assignment's sixth feature.
+Offline AI is intentionally presented as a feature, even though technically it is a deployment capability reused by disease diagnosis and local rule execution. Farmland mapping was removed from the active product scope on 2026-10-13; its old prediction records remain readable as legacy history.
 
 ## 4. Feature Contracts
 
@@ -190,31 +190,9 @@ Implementation guidance:
 
 Primary scientific sources: `Rejuvenating old, senile orchards...` and `Assessment of Rejuvenation Technology...Old Guava Orchard`.
 
-### 4.5 Crop/farmland mapping
+### 4.5 Retired: crop/farmland mapping
 
-Purpose: demonstrate parcel/crop-region mapping from prepared or uploaded satellite imagery.
-
-Inputs:
-
-- V1: preloaded or uploaded Sentinel-2 GeoTIFF imagery.
-- Optional farm geometry/location.
-- Live Copernicus STAC discovery is an extension, not a v1 dependency.
-
-Outputs:
-
-- Validated raster metadata.
-- Processed preview and/or segmentation mask.
-- Boundary overlay or parcel geometry where the selected model supports it.
-- Provenance, acquisition time, and limitations.
-
-Implementation guidance:
-
-- Rasterio performs backend validation and preprocessing.
-- Use a small pre-trained or reproducibly trained segmentation path suitable for the laptop. A seeded demonstration raster is required.
-- Smallholder fragmentation and 10 m Sentinel-2 mixed pixels limit boundary accuracy. State this explicitly.
-- Do not make the main demo depend on downloading large live scenes.
-
-Primary scientific sources: fabSAM, smallholder mapping research, Sentinel-2 documentation, Copernicus STAC documentation, and Rasterio documentation.
+Removed from the active application scope on 2026-10-13 at the user's request. The former `/features/mapping` page and API are unavailable. Existing prediction rows remain in the database and history for auditability, labeled “Pemetaan Lahan (riwayat lama)”.
 
 ### 4.6 Offline AI and synchronization
 
@@ -436,7 +414,6 @@ Exact routes may evolve, but keep these boundaries explicit:
 - `/api/v1/features/soil/*`.
 - `/api/v1/features/disease/*`.
 - `/api/v1/features/rejuvenation/*`.
-- `/api/v1/features/mapping/*`.
 - `/api/v1/admin/*` and `/api/v1/superadmin/*`.
 - `/api/v1/health/*`: liveness, readiness, model and dependency status as appropriate.
 
@@ -587,12 +564,9 @@ Completion: evaluation report, reproducible command, versioned artifact, and onl
 
 Completion: install once, restart browser, diagnose offline, save result, reconnect, and sync exactly once.
 
-### Phase 5: Mapping
+### Phase 5: Mapping (retired)
 
-- Seeded GeoTIFF, Rasterio validation/preprocessing, preview and boundary/mask flow.
-- Optional Copernicus STAC adapter after the offline demo path is stable.
-
-Completion: a prepared image produces a provenance-labeled mapping result without requiring a large live download.
+This planned phase is superseded by the 2026-10-13 decision to remove farmland mapping from the active application. Do not reimplement it without explicit user approval.
 
 ### Phase 6: Self-host release
 
@@ -736,7 +710,6 @@ Do not treat NotebookLM's prose as automatically correct. Require source citatio
 | Soil condition/NPK limitations | Scientific | ORBi spectroscopy review; Semarang/USK papers; Open Soil Spectral Library; SoilGrids |
 | Rice disease data/model | Scientific | Paddy Doctor; PlantDoc; PlantVillage bias; AgriFusionNet and RootSense papers |
 | Guava rejuvenation rules | Scientific | Old-orchard rejuvenation review; old-guava participatory study |
-| Farmland mapping | Scientific + Web Implementation | fabSAM; smallholder mapping; Sentinel-2; STAC; Rasterio |
 | ONNX browser inference | Web Implementation | ONNX Runtime Web and deployment docs; PyTorch ONNX docs |
 | PWA cache/offline queue | Web Implementation + Operations | Vite PWA; Workbox precaching/background sync; TanStack persistence; project supplements |
 | MySQL/SQLAlchemy/Alembic | Web Implementation | Planning Decisions Supplement; MySQL 8.4; SQLAlchemy MySQL dialect; Alembic docs |
@@ -764,7 +737,7 @@ Do not treat NotebookLM's prose as automatically correct. Require source citatio
 
 The staged Cursor grill queried the Scientific, Website System & Operations, and Web Implementation notebooks and settled these decisions:
 
-- Crop scope is rice and guava only. The six demonstrated features are rice harvest prediction, soil condition and nitrogen guidance, rice leaf disease diagnosis, guava rejuvenation guidance, crop/farmland mapping, and offline AI with synchronization.
+- Crop scope is rice and guava only. The current demonstrated features are rice harvest prediction, soil condition and nitrogen guidance, rice leaf disease diagnosis, guava rejuvenation guidance, and offline AI with synchronization. Farmland mapping was retired from the application on 2026-10-13.
 - Disease v1 is visual-only for inference. Optional symptom or weather context may be stored for history but is not required by the model. Unsupported or low-confidence input returns “Tidak dapat diklasifikasi dengan andal” rather than a forced label.
 - Seed rice varieties are Ciherang, IR64, and Inpari 32. Durations are transparent approximate priors, not local calibration.
 - Disease classes must be finalized only after dataset provenance and license review; use a permitted Paddy Doctor-aligned subset with healthy and adequately represented field-relevant classes.
@@ -780,7 +753,6 @@ The staged Cursor grill queried the Scientific, Website System & Operations, and
 
 These are implementation-time discovery items, not product-design blockers:
 
-- Mapping model and data license plus the seeded Sentinel-2 demonstration area.
 - Public hostname and current Cloudflare Tunnel ingress configuration.
 - CPU, RAM, storage, and any usable GPU on the laptop.
 - Backup destination outside the laptop.

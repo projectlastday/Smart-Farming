@@ -157,30 +157,9 @@ def test_sync_rejects_mismatched_farm(client, db, farmer, farmer_session):
     assert resp.status_code == 404
 
 
-def test_mapping_guava_not_applicable(client, db, farmer, farmer_session):
-    headers = _headers(farmer_session["csrf"])
-    farm = Farm(name="Kebun", location="Demak", farmer_id=farmer.id)
-    db.add(farm)
-    db.flush()
-    cycle = CropCycle(
-        farm_id=farm.id,
-        crop=CropType.guava,
-        variety="Kristal",
-        planting_date=date(2010, 1, 1),
-        area=1.0,
-        location="Demak",
-        lifecycle_status=CycleStatus.growing,
-    )
-    db.add(cycle)
-    db.commit()
-
-    resp = client.post(
-        "/api/v1/features/mapping",
-        json={"crop_cycle_id": cycle.id, "use_fixture": True},
-        headers=headers,
-    )
-    assert resp.status_code == 200
-    assert resp.json()["output"]["status"] == "not_applicable"
+def test_retired_mapping_endpoint_is_not_available(client):
+    resp = client.post("/api/v1/features/mapping", json={})
+    assert resp.status_code == 404
 
 
 def test_disease_guava_not_applicable(client, db, farmer, farmer_session):

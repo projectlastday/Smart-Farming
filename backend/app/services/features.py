@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from app.adapters.external import NasaPowerAdapter, SoilGridsAdapter
 from app.models import CropCycle, CycleStatus, Farm, Prediction, SyncState, User
 from app.predictors.disease import DiseasePredictor
-from app.predictors.mapping import MappingService
 from app.predictors.rules import (
     GROWTH_STAGE_LABELS_ID,
     crop_feature_applicable,
@@ -84,7 +83,6 @@ class FeatureService:
         self.soilgrids = SoilGridsAdapter()
         self.nasa = NasaPowerAdapter()
         self.disease = DiseasePredictor()
-        self.mapping = MappingService()
 
     def run_harvest(self, db: Session, user: User, cycle_id: str, variety_key: str | None):
         cycle = _get_owned_cycle(db, user, cycle_id)
@@ -236,41 +234,6 @@ class FeatureService:
             recommendation=recommendation,
             provenance={"model": self.disease.metadata()},
         )
-
-    def run_mapping(self, db: Session, user: User, cycle_id: str, use_fixture: bool):
-        cycle = _get_owned_cycle(db, user, cycle_id)
-        ok, reason = crop_feature_applicable("mapping", cycle.crop)
-        if not ok:
-            return save_prediction(
-                db,
-                user=user,
-                cycle=cycle,
-                feature_type="mapping",
-                model_version=self.mapping.version,
-                inputs_snapshot={"use_fixture": use_fixture},
-                output={"status": "not_applicable", "reason": reason},
-                confidence=None,
-                assumptions=None,
-                explanation=reason,
-                recommendation="Tidak Berlaku",
-                provenance=None,
-            )
-        result = self.mapping.analyze()
-        return save_prediction(
-            db,
-            user=user,
-            cycle=cycle,
-            feature_type="mapping",
-            model_version=self.mapping.version,
-            inputs_snapshot={"use_fixture": use_fixture},
-            output=result,
-            confidence=None,
-            assumptions="Raster demo terbatas; metode ambang intensitas pita tunggal, bukan NDVI.",
-            explanation=str(result.get("segmentation_summary", result.get("message"))),
-            recommendation="Verifikasi batas lahan di lapangan.",
-            provenance=result.get("provenance"),
-        )
-
 
 def mark_actual_harvest(
     db: Session,

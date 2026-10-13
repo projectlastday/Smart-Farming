@@ -25,7 +25,6 @@ const FARMER_ROUTES: { path: string; heading: RegExp }[] = [
   { path: '/features/soil', heading: /Analisis Kondisi Tanah/ },
   { path: '/features/disease', heading: /Diagnosis Penyakit Daun Padi/ },
   { path: '/features/rejuvenation', heading: /Rejuvenasi Kebun Jambu/ },
-  { path: '/features/mapping', heading: /Pemetaan Lahan/ },
   { path: '/features/offline', heading: /AI Offline/ },
 ];
 

@@ -80,20 +80,6 @@ test.describe('Goal acceptance against live Compose', () => {
     await expect(page.getByText(/Tidak Berlaku/)).toHaveCount(0);
   });
 
-  test('mapping raster area is computed, not 62.5', async ({ page }) => {
-    await loginAsDemo(page);
-    await page.goto('/features/mapping');
-    await selectRiceCycle(page);
-    await page.getByRole('button', { name: 'Proses Pemetaan' }).click();
-    await expect(page.locator('.result-block')).toBeVisible({ timeout: 15_000 });
-    await page.getByText('Detail teknis output').click();
-    const technical = page.locator('.result-block pre');
-    await expect(technical).toContainText(/crop_area_percent/);
-    const text = await technical.innerText();
-    expect(text).not.toMatch(/"crop_area_percent"\s*:\s*62\.5/);
-    expect(text).toMatch(/"crop_area_percent"\s*:\s*25(\.0+)?/);
-  });
-
   test('overdue harvest stage and actual harvest delta', async ({ page, request }) => {
     const { csrf, origin } = await apiLogin(request, E2E_EMAIL, E2E_PASSWORD);
     const headers = mutatingHeaders(csrf, origin);

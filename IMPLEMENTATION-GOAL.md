@@ -6,6 +6,8 @@
 **Bahasa antarmuka:** Bahasa Indonesia  
 **Tanaman dalam scope:** padi dan jambu biji
 
+**Perubahan scope (2026-10-13):** fitur pemetaan lahan dinonaktifkan dan dihapus dari aplikasi atas permintaan pengguna. Hanya AI Offline yang tersisa sebagai fitur tambahan; bila rubrik tetap mewajibkan dua fitur tambahan, perlu disepakati fitur pengganti. Daftar pemetaan di bawah mencatat audit/perencanaan lama dan bukan instruksi untuk mengaktifkannya kembali.
+
 ## 1. Tujuan Akhir
 
 Selesaikan seluruh temuan audit AgriFusionNet sampai aplikasi:

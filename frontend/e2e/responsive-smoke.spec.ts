@@ -12,7 +12,6 @@ const APP_ROUTES = [
   '/features/soil',
   '/features/disease',
   '/features/rejuvenation',
-  '/features/mapping',
   '/features/offline',
 ] as const;
 

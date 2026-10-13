@@ -160,11 +160,6 @@ class RejuvenationRequest(BaseModel):
     canopy_condition: str
 
 
-class MappingRequest(BaseModel):
-    crop_cycle_id: str
-    use_fixture: bool = True
-
-
 class HarvestActualRequest(BaseModel):
     crop_cycle_id: str
     actual_harvest_date: date

@@ -32,9 +32,4 @@ curl -sf -b "$COOKIE_JAR" -X POST "$BASE/api/v1/features/harvest" \
 echo "== model metadata =="
 curl -sf -b "$COOKIE_JAR" "$BASE/api/v1/features/disease/model/metadata" | grep -q 'disease-mobilenet-v1-paddy-doctor'
 
-echo "== mapping fixture =="
-curl -sf -b "$COOKIE_JAR" -X POST "$BASE/api/v1/features/mapping" \
-  -H "Content-Type: application/json" -H "X-CSRF-Token: $CSRF" -H "Origin: $ORIGIN" \
-  -d "{\"crop_cycle_id\":\"$CYCLE\"}" | grep -q 'segmentation_summary'
-
 echo "SMOKE OK"

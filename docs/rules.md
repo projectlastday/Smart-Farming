@@ -1,6 +1,6 @@
 # Feature rules (v1)
 
-Harvest, soil, rejuvenation, and mapping are **deterministic rules**, not trained models. UI reliability uses `kind: rule_completeness` (“Keandalan aturan”), never a fake model probability.
+Harvest, soil, and rejuvenation are **deterministic rules**, not trained models. UI reliability uses `kind: rule_completeness` (“Keandalan aturan”), never a fake model probability.
 
 ## Rice harvest
 
@@ -21,13 +21,6 @@ Harvest, soil, rejuvenation, and mapping are **deterministic rules**, not traine
 - Score 0–6 from orchard age (≥10 / ≥15), productivity decline, and canopy condition.
 - ≥4 `rejuvenation_candidate`, ≥2 `monitor`, else `continue_management`.
 - Species-specific to jambu biji. Rice cycles return not-applicable.
-
-## Mapping
-
-- Demo raster: `fixtures/mapping/demo_raster.tif` (128×128, single band).
-- Method: **single-band intensity threshold** at 100, **not NDVI** (no NIR band).
-- Known fixture result: `crop_area_percent = 25.0` in `real_raster` mode.
-- Missing raster → `deterministic_demo_fallback` with `crop_area_percent: null` and an explicit reason. Never the old constant 62.5.
 
 ## Disease (ML, documented separately)
 

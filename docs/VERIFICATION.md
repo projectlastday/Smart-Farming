@@ -56,7 +56,6 @@ Playwright used default `PLAYWRIGHT_BASE_URL=http://127.0.0.1:8005`. Credentials
 |------|----------|
 | Demo farms rice + guava, no E2E residue | `goal-acceptance` demo farms test |
 | Known-good blast classification | `goal-acceptance` online disease + `app.spec` disease flow |
-| Mapping raster ≠ 62.5 (fixture 25.0) | `goal-acceptance` mapping test + smoke mapping fixture |
 | Overdue harvest stage + actual harvest delta | `goal-acceptance` overdue harvest test |
 | History beyond 100 | `goal-acceptance` prediction history test |
 | Farmer cannot read another farmer's farm/cycle/prediction | `goal-acceptance` ownership test |
@@ -90,7 +89,7 @@ Playwright used default `PLAYWRIGHT_BASE_URL=http://127.0.0.1:8005`. Credentials
 
 ## Remaining product limitations (not claimed fixed)
 
-1. Mapping uses seeded GeoTIFF / deterministic fallback, not a live Copernicus pipeline.
+1. Farmland mapping was removed from the current product scope; historical mapping prediction records remain available in history.
 2. Admin reference is server-sourced and read-only in v1 (no public CRUD).
 3. ONNX Runtime WASM may log CDN fallback warnings in some browsers (functional fallback works).
 4. pip-audit findings deferred in `docs/security-scanning.md`.

@@ -43,8 +43,8 @@ test.describe('Feature form searchable selectors', () => {
     await expect(page.getByRole('option', { name: /guava|jambu|Kristal/i }).first()).toBeVisible();
   });
 
-  test('soil mapping and offline expose searchable cycles', async ({ page }) => {
-    for (const path of ['/features/soil', '/features/mapping', '/features/offline']) {
+  test('soil and offline expose searchable cycles', async ({ page }) => {
+    for (const path of ['/features/soil', '/features/offline']) {
       await page.goto(path);
       await expect(page.getByRole('combobox', { name: 'Siklus Tanam' })).toBeVisible();
     }

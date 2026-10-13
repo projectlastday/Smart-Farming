@@ -111,7 +111,7 @@ export const FEATURE_LABELS: Record<string, string> = {
   soil: 'Analisis Tanah',
   disease: 'Diagnosis Penyakit',
   rejuvenation: 'Rejuvenasi Jambu',
-  mapping: 'Pemetaan Lahan',
+  mapping: 'Pemetaan Lahan (riwayat lama)',
   offline: 'AI Offline',
 };
 

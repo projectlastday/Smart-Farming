@@ -18,7 +18,6 @@ from app.schemas import (
     FarmUpdateRequest,
     HarvestActualRequest,
     HarvestRequest,
-    MappingRequest,
     MessageResponse,
     PredictionListOut,
     PredictionOut,
@@ -383,23 +382,6 @@ def rejuvenation_feature(
 ):
     try:
         prediction = feature_service.run_rejuvenation(db, ctx.user, payload.model_dump())
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-    db.commit()
-    db.refresh(prediction)
-    return prediction_out(prediction)
-
-
-@router.post("/features/mapping", response_model=PredictionOut)
-def mapping_feature(
-    payload: MappingRequest,
-    ctx: CurrentUserContext = Depends(require_csrf),
-    db: Session = Depends(get_db),
-):
-    try:
-        prediction = feature_service.run_mapping(
-            db, ctx.user, payload.crop_cycle_id, payload.use_fixture
-        )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     db.commit()

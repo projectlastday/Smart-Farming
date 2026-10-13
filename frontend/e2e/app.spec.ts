@@ -15,7 +15,6 @@ const FEATURE_ROUTES = [
   { path: '/features/soil', heading: /Analisis Kondisi Tanah/i },
   { path: '/features/disease', heading: /Diagnosis Penyakit Daun Padi/i },
   { path: '/features/rejuvenation', heading: /Rejuvenasi Kebun Jambu/i },
-  { path: '/features/mapping', heading: /Pemetaan Lahan/i },
   { path: '/features/offline', heading: /AI Offline/i },
 ] as const;
 
@@ -108,6 +107,11 @@ test.describe('Navigation and feature routes', () => {
       });
     });
   }
+
+  test('retired farmland-mapping route is unavailable', async ({ page }) => {
+    await page.goto('/features/mapping');
+    await expect(page.getByRole('heading', { name: /Halaman tidak ditemukan/i })).toBeVisible();
+  });
 });
 
 test.describe('Feature flows', () => {
@@ -143,15 +147,6 @@ test.describe('Feature flows', () => {
     await page.getByRole('button', { name: 'Diagnosis Online' }).click();
     await expectPredictionResult(page);
     await expect(page.getByText(/blast/i).first()).toBeVisible();
-  });
-
-  test('mapping demo with GeoTIFF or fallback', async ({ page }) => {
-    await page.goto('/features/mapping');
-    await selectRiceCycle(page);
-    await page.getByRole('button', { name: 'Proses Pemetaan' }).click();
-    await expectPredictionResult(page);
-    await page.getByText('Detail teknis output').click();
-    await expect(page.locator('.result-block pre')).toContainText(/segmentation_summary|raster_metadata/i);
   });
 
   test('unsupported crop returns Tidak Berlaku via API', async ({ request }) => {

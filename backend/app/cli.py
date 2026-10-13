@@ -249,8 +249,6 @@ def seed_demo() -> None:
                     "input_provenance": "manual",
                 },
             )
-        if not _has_feature(db, farmer.id, rice_cycle.id, "mapping"):
-            service.run_mapping(db, farmer, rice_cycle.id, True)
         blast = ROOT_DIR / "fixtures" / "disease" / "known_good" / "blast.jpg"
         if not _has_feature(db, farmer.id, rice_cycle.id, "disease") and blast.exists():
             service.run_disease(db, farmer, rice_cycle.id, blast.read_bytes(), None)

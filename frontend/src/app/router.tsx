@@ -11,7 +11,6 @@ import { HarvestPage } from '@/routes/features/HarvestPage';
 import { SoilPage } from '@/routes/features/SoilPage';
 import { DiseasePage } from '@/routes/features/DiseasePage';
 import { RejuvenationPage } from '@/routes/features/RejuvenationPage';
-import { MappingPage } from '@/routes/features/MappingPage';
 import { OfflinePage } from '@/routes/features/OfflinePage';
 import { PredictionsHistoryPage } from '@/routes/predictions/HistoryPage';
 import { PredictionDetailPage } from '@/routes/predictions/DetailPage';
@@ -46,7 +45,6 @@ export const router = createBrowserRouter([
           { path: 'features/soil', element: <SoilPage /> },
           { path: 'features/disease', element: <DiseasePage /> },
           { path: 'features/rejuvenation', element: <RejuvenationPage /> },
-          { path: 'features/mapping', element: <MappingPage /> },
           { path: 'features/offline', element: <OfflinePage /> },
         ],
       },

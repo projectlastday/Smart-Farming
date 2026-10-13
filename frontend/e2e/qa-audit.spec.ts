@@ -53,7 +53,6 @@ test.describe('Live QA audit', () => {
       '/features/soil',
       '/features/disease',
       '/features/rejuvenation',
-      '/features/mapping',
       '/features/offline',
     ]) {
       await page.goto(route);
